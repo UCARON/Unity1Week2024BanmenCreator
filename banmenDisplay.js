@@ -92,58 +92,83 @@ async function loadBanmenData() {
 // パレットとセレクターを追加
 function createPalette() {
     const palette = document.createElement('div');
-    palette.style.marginBottom = '10px';
-   
-    // 選択用画像
+    palette.style.position = 'fixed';
+    palette.style.right = '20px';
+    palette.style.top = '20px';
+    palette.style.display = 'flex';
+    palette.style.flexDirection = 'column';
+    palette.style.gap = '10px';
+    palette.style.background = 'white';
+    palette.style.padding = '10px';
+    palette.style.border = '1px solid #ccc';
+    palette.style.borderRadius = '5px';
+    palette.style.boxShadow = '0 2px 4px rgba(0,0,0,0.1)';
+
     const items = [
-      { value: 0, img: null, label: '空' },
-      { value: 1, img: 'saku1.png', label: '柵' },
-      { value: 2, img: 'rocket_tri.png', label: 'ロケット' }
+        { value: 0, img: null, label: '空', description: '0番 何も置かない' },
+        { value: 1, img: 'saku1.png', label: '柵', description: '1番 固定壁' },
+        { value: 2, img: 'rocket_tri.png', label: 'ロケット', description: '2番 ロケット' }
     ];
-   
+
     let selectedValue = 0;
-   
+
     items.forEach(item => {
-      const button = document.createElement('button');
-      button.style.width = '60px';
-      button.style.height = '60px';
-      button.style.margin = '0 5px';
-      button.style.position = 'relative';
-      
-      if (item.img) {
-        const img = document.createElement('img');
-        img.src = item.img;
-        img.style.width = '100%';
-        img.style.height = '100%';
-        button.appendChild(img);
-      } else {
-        button.textContent = item.label;
-      }
-      
-      button.onclick = () => {
-        selectedValue = item.value;
-        // 選択状態を視覚的に表示
-        palette.querySelectorAll('button').forEach(btn => btn.style.border = '1px solid #ccc');
-        button.style.border = '3px solid blue';
-      };
-      
-      palette.appendChild(button);
+        const itemContainer = document.createElement('div');
+        itemContainer.style.textAlign = 'center';
+        
+        const button = document.createElement('button');
+        button.style.width = '60px';
+        button.style.height = '60px';
+        button.style.position = 'relative';
+        button.style.border = '1px solid #ccc';
+        button.style.borderRadius = '5px';
+        button.style.background = 'white';
+        
+        if (item.img) {
+            const img = document.createElement('img');
+            img.src = item.img;
+            img.style.width = '100%';
+            img.style.height = '100%';
+            button.appendChild(img);
+        } else {
+            button.textContent = item.label;
+        }
+        
+        const label = document.createElement('div');
+        label.textContent = item.description;
+        label.style.fontSize = '12px';
+        label.style.marginTop = '5px';
+        label.style.color = '#666';
+        
+        button.onclick = () => {
+            selectedValue = item.value;
+            palette.querySelectorAll('button').forEach(btn => {
+                btn.style.border = '1px solid #ccc';
+                btn.style.boxShadow = 'none';
+            });
+            button.style.border = '2px solid #007bff';
+            button.style.boxShadow = '0 0 5px rgba(0,123,255,0.5)';
+        };
+        
+        itemContainer.appendChild(button);
+        itemContainer.appendChild(label);
+        palette.appendChild(itemContainer);
     });
-   
+
     // クリック時の動作を変更
     const oldCreateCell = createCell;
     createCell = (value, x, y) => {
-      const cell = oldCreateCell(value, x, y);
-      cell.onclick = () => {
-        cell.dataset.value = selectedValue;
-        cell.innerHTML = '';
-        oldCreateCell(selectedValue, x, y).childNodes.forEach(node => cell.appendChild(node.cloneNode(true)));
-      };
-      return cell;
+        const cell = oldCreateCell(value, x, y);
+        cell.onclick = () => {
+            cell.dataset.value = selectedValue;
+            cell.innerHTML = '';
+            oldCreateCell(selectedValue, x, y).childNodes.forEach(node => cell.appendChild(node.cloneNode(true)));
+        };
+        return cell;
     };
-   
+
     return palette;
-   }
+}
    
    // init関数を修正
    async function init() {
