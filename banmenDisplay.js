@@ -89,7 +89,67 @@ async function loadBanmenData() {
     a.click();
    }
    
+// パレットとセレクターを追加
+function createPalette() {
+    const palette = document.createElement('div');
+    palette.style.marginBottom = '10px';
+   
+    // 選択用画像
+    const items = [
+      { value: 0, img: null, label: '空' },
+      { value: 1, img: 'saku1.png', label: '柵' },
+      { value: 2, img: 'rocket_tri.png', label: 'ロケット' }
+    ];
+   
+    let selectedValue = 0;
+   
+    items.forEach(item => {
+      const button = document.createElement('button');
+      button.style.width = '60px';
+      button.style.height = '60px';
+      button.style.margin = '0 5px';
+      button.style.position = 'relative';
+      
+      if (item.img) {
+        const img = document.createElement('img');
+        img.src = item.img;
+        img.style.width = '100%';
+        img.style.height = '100%';
+        button.appendChild(img);
+      } else {
+        button.textContent = item.label;
+      }
+      
+      button.onclick = () => {
+        selectedValue = item.value;
+        // 選択状態を視覚的に表示
+        palette.querySelectorAll('button').forEach(btn => btn.style.border = '1px solid #ccc');
+        button.style.border = '3px solid blue';
+      };
+      
+      palette.appendChild(button);
+    });
+   
+    // クリック時の動作を変更
+    const oldCreateCell = createCell;
+    createCell = (value, x, y) => {
+      const cell = oldCreateCell(value, x, y);
+      cell.onclick = () => {
+        cell.dataset.value = selectedValue;
+        cell.innerHTML = '';
+        oldCreateCell(selectedValue, x, y).childNodes.forEach(node => cell.appendChild(node.cloneNode(true)));
+      };
+      return cell;
+    };
+   
+    return palette;
+   }
+   
+   // init関数を修正
    async function init() {
+    const palette = createPalette();
+    document.body.appendChild(palette);
+    
     const container = document.createElement('div');
     container.id = 'container';
     container.style.display = 'grid';
@@ -104,10 +164,28 @@ async function loadBanmenData() {
       });
     });
    
+    const buttonContainer = document.createElement('div');
+    buttonContainer.style.marginTop = '10px';
+   
     const downloadBtn = document.createElement('button');
     downloadBtn.textContent = 'Download Banmen.txt';
     downloadBtn.onclick = downloadLayout;
-    document.body.appendChild(downloadBtn);
+    buttonContainer.appendChild(downloadBtn);
+   
+    const clearBtn = document.createElement('button');
+    clearBtn.textContent = 'Clear All';
+    clearBtn.style.marginLeft = '10px';
+    clearBtn.onclick = () => {
+      Array.from(container.children).forEach(cell => {
+        cell.dataset.value = 0;
+        cell.innerHTML = '';
+        createCell(0, cell.dataset.x, cell.dataset.y).childNodes.forEach(node => 
+          cell.appendChild(node.cloneNode(true)));
+      });
+    };
+    buttonContainer.appendChild(clearBtn);
+   
+    document.body.appendChild(buttonContainer);
    }
    
    init();
