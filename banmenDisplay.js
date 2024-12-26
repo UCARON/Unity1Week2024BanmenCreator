@@ -37,15 +37,24 @@ async function loadBanmenData() {
     cell.dataset.y = y;
     cell.dataset.value = value;
    
+    // レンガ画像を追加
+    const rengaImg = document.createElement('img');
+    rengaImg.src = 'renga_s.png';
+    rengaImg.style.width = '100%';
+    rengaImg.style.position = 'absolute';
+    cell.appendChild(rengaImg);
+   
     if (value === 1) {
       const sakuImg = document.createElement('img');
       sakuImg.src = 'saku1.png';
       sakuImg.style.width = '100%';
+      sakuImg.style.position = 'absolute';
       cell.appendChild(sakuImg);
     } else if (value === 2) {
       const rocketImg = document.createElement('img');
       rocketImg.src = 'rocket_tri.png';
       rocketImg.style.width = '100%';
+      rocketImg.style.position = 'absolute';
       cell.appendChild(rocketImg);
     }
    
