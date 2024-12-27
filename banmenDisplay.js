@@ -210,6 +210,34 @@ async function init() {
     };
     buttonContainer.appendChild(clearBtn);
 
+    // ファイル選択機能を追加
+    const fileInput = document.createElement('input');
+    fileInput.type = 'file';
+    fileInput.accept = '.txt';
+    fileInput.style.display = 'none';
+
+    const openBtn = document.createElement('button');
+    openBtn.textContent = 'Open Banmen.txt';
+    openBtn.style.marginLeft = '10px';
+    openBtn.onclick = () => fileInput.click();
+
+    fileInput.onchange = async (e) => {
+        const file = e.target.files[0];
+        const text = await file.text();
+        const lines = text.split('\n').filter(line => line.includes('['));
+        const layout = lines.map(line => JSON.parse(line.replace(/\s/g, '')));
+        
+        container.innerHTML = '';
+        layout.forEach((row, y) => {
+            row.forEach((value, x) => {
+                container.appendChild(createCell(value, x, y));
+            });
+        });
+    };
+
+    buttonContainer.appendChild(openBtn);
+    buttonContainer.appendChild(fileInput);
+
     document.body.appendChild(buttonContainer);
 }
 
