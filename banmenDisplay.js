@@ -4,21 +4,21 @@ async function loadBanmenData() {
     const lines = banmenText.split('\n').filter(line => line.includes('['));
     const layout = lines.map(line => JSON.parse(line.replace(/\s/g, '')));
     return layout;
-   }
-   
-   function downloadLayout() {
+}
+
+function downloadLayout() {
     const container = document.getElementById('container');
     const layout = [];
     let currentRow = [];
-    
+
     Array.from(container.children).forEach((cell, index) => {
-      currentRow.push(parseInt(cell.dataset.value));
-      if ((index + 1) % 9 === 0) {
-        layout.push([...currentRow]);
-        currentRow = [];
-      }
+        currentRow.push(parseInt(cell.dataset.value));
+        if ((index + 1) % 9 === 0) {
+            layout.push([...currentRow]);
+            currentRow = [];
+        }
     });
-   
+
     const content = layout.map(row => `[${row.join(',')}]`).join('\n');
     const blob = new Blob([content], { type: 'text/plain' });
     const url = URL.createObjectURL(blob);
@@ -26,9 +26,9 @@ async function loadBanmenData() {
     a.href = url;
     a.download = 'Banmen.txt';
     a.click();
-   }
-   
-   function createCell(value, x, y) {
+}
+
+function createCell(value, x, y) {
     const cell = document.createElement('div');
     cell.style.width = '32px';
     cell.style.height = '32px';
@@ -36,56 +36,57 @@ async function loadBanmenData() {
     cell.dataset.x = x;
     cell.dataset.y = y;
     cell.dataset.value = value;
-   
+
     // レンガ画像を追加
     const rengaImg = document.createElement('img');
     rengaImg.src = 'renga_s.png';
     rengaImg.style.width = '100%';
     rengaImg.style.position = 'absolute';
     cell.appendChild(rengaImg);
-   
+
     if (value === 1) {
-      const sakuImg = document.createElement('img');
-      sakuImg.src = 'saku1.png';
-      sakuImg.style.width = '100%';
-      sakuImg.style.position = 'absolute';
-      cell.appendChild(sakuImg);
+        const sakuImg = document.createElement('img');
+        sakuImg.src = 'saku1.png';
+        sakuImg.style.width = '100%';
+        sakuImg.style.position = 'absolute';
+        cell.appendChild(sakuImg);
     } else if (value === 2) {
-      const rocketImg = document.createElement('img');
-      rocketImg.src = 'rocket_tri.png';
-      rocketImg.style.width = '100%';
-      rocketImg.style.position = 'absolute';
-      cell.appendChild(rocketImg);
-    }else if (value === 3) {
+        const rocketImg = document.createElement('img');
+        rocketImg.src = 'rocket_tri.png';
+        rocketImg.style.width = '100%';
+        rocketImg.style.position = 'absolute';
+        cell.appendChild(rocketImg);
+    } else if (value === 3) {
         const kutusitaImg = document.createElement('img');
         kutusitaImg.src = 'kutusita3.png';
         kutusitaImg.style.width = '100%';
         kutusitaImg.style.position = 'absolute';
         cell.appendChild(kutusitaImg);
     }
-   
+
+    // createCellの元々のonclick部分を削除し、パレット内の処理だけを使用
     cell.onclick = () => {
-      cell.dataset.value = (parseInt(cell.dataset.value) + 1) % 3;
-      cell.innerHTML = '';
-      createCell(parseInt(cell.dataset.value), x, y).childNodes.forEach(node => cell.appendChild(node.cloneNode(true)));
+        cell.dataset.value = (parseInt(cell.dataset.value) + 1) % 4;  // この行は不要になる
+        cell.innerHTML = '';
+        createCell(parseInt(cell.dataset.value), x, y).childNodes.forEach(node => cell.appendChild(node.cloneNode(true)));
     };
-   
+
     return cell;
-   }
-   
-   function downloadLayout() {
+}
+
+function downloadLayout() {
     const container = document.getElementById('container');
     const layout = [];
     let currentRow = [];
-    
+
     Array.from(container.children).forEach((cell, index) => {
-      currentRow.push(parseInt(cell.dataset.value));
-      if ((index + 1) % 9 === 0) {
-        layout.push([...currentRow]);
-        currentRow = [];
-      }
+        currentRow.push(parseInt(cell.dataset.value));
+        if ((index + 1) % 9 === 0) {
+            layout.push([...currentRow]);
+            currentRow = [];
+        }
     });
-   
+
     const content = layout.map(row => `[${row.join(',')}]`).join('\n');
     const blob = new Blob([content], { type: 'text/plain' });
     const url = URL.createObjectURL(blob);
@@ -93,8 +94,8 @@ async function loadBanmenData() {
     a.href = url;
     a.download = 'Banmen.txt';
     a.click();
-   }
-   
+}
+
 // パレットとセレクターを追加
 function createPalette() {
     const palette = document.createElement('div');
@@ -122,7 +123,7 @@ function createPalette() {
     items.forEach(item => {
         const itemContainer = document.createElement('div');
         itemContainer.style.textAlign = 'center';
-        
+
         const button = document.createElement('button');
         button.style.width = '60px';
         button.style.height = '60px';
@@ -130,7 +131,7 @@ function createPalette() {
         button.style.border = '1px solid #ccc';
         button.style.borderRadius = '5px';
         button.style.background = 'white';
-        
+
         if (item.img) {
             const img = document.createElement('img');
             img.src = item.img;
@@ -140,13 +141,13 @@ function createPalette() {
         } else {
             button.textContent = item.label;
         }
-        
+
         const label = document.createElement('div');
         label.textContent = item.description;
         label.style.fontSize = '12px';
         label.style.marginTop = '5px';
         label.style.color = '#666';
-        
+
         button.onclick = () => {
             selectedValue = item.value;
             palette.querySelectorAll('button').forEach(btn => {
@@ -156,7 +157,7 @@ function createPalette() {
             button.style.border = '2px solid #007bff';
             button.style.boxShadow = '0 0 5px rgba(0,123,255,0.5)';
         };
-        
+
         itemContainer.appendChild(button);
         itemContainer.appendChild(label);
         palette.appendChild(itemContainer);
@@ -176,48 +177,48 @@ function createPalette() {
 
     return palette;
 }
-   
-   // init関数を修正
-   async function init() {
+
+// init関数を修正
+async function init() {
     const palette = createPalette();
     document.body.appendChild(palette);
-    
+
     const container = document.createElement('div');
     container.id = 'container';
     container.style.display = 'grid';
     container.style.gridTemplateColumns = 'repeat(9, 32px)';
     container.style.gap = '0';
     document.body.appendChild(container);
-   
+
     const layout = await loadBanmenData();
     layout.forEach((row, y) => {
-      row.forEach((value, x) => {
-        container.appendChild(createCell(value, x, y));
-      });
+        row.forEach((value, x) => {
+            container.appendChild(createCell(value, x, y));
+        });
     });
-   
+
     const buttonContainer = document.createElement('div');
     buttonContainer.style.marginTop = '10px';
-   
+
     const downloadBtn = document.createElement('button');
     downloadBtn.textContent = 'Download Banmen.txt';
     downloadBtn.onclick = downloadLayout;
     buttonContainer.appendChild(downloadBtn);
-   
+
     const clearBtn = document.createElement('button');
     clearBtn.textContent = 'Clear All';
     clearBtn.style.marginLeft = '10px';
     clearBtn.onclick = () => {
-      Array.from(container.children).forEach(cell => {
-        cell.dataset.value = 0;
-        cell.innerHTML = '';
-        createCell(0, cell.dataset.x, cell.dataset.y).childNodes.forEach(node => 
-          cell.appendChild(node.cloneNode(true)));
-      });
+        Array.from(container.children).forEach(cell => {
+            cell.dataset.value = 0;
+            cell.innerHTML = '';
+            createCell(0, cell.dataset.x, cell.dataset.y).childNodes.forEach(node =>
+                cell.appendChild(node.cloneNode(true)));
+        });
     };
     buttonContainer.appendChild(clearBtn);
-   
+
     document.body.appendChild(buttonContainer);
-   }
-   
-   init();
+}
+
+init();
