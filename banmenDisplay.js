@@ -107,7 +107,8 @@ function createPalette() {
     const items = [
         { value: 0, img: null, label: '空', description: '0番 何も置かない' },
         { value: 1, img: 'saku1.png', label: '柵', description: '1番 固定壁' },
-        { value: 2, img: 'rocket_tri.png', label: 'ロケット', description: '2番 ロケット' }
+        { value: 2, img: 'rocket_tri.png', label: 'ロケット', description: '2番 ロケット' },
+        { value: 3, img: 'kutusita3.png', label: '靴下', description: '3番 靴下' },
     ];
 
     let selectedValue = 0;
