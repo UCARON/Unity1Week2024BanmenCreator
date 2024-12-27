@@ -37,7 +37,6 @@ function createCell(value, x, y) {
     cell.dataset.y = y;
     cell.dataset.value = value;
 
-    // レンガ画像を追加
     const rengaImg = document.createElement('img');
     rengaImg.src = 'renga_s.png';
     rengaImg.style.width = '100%';
@@ -63,13 +62,6 @@ function createCell(value, x, y) {
         kutusitaImg.style.position = 'absolute';
         cell.appendChild(kutusitaImg);
     }
-
-    // createCellの元々のonclick部分を削除し、パレット内の処理だけを使用
-    cell.onclick = () => {
-        cell.dataset.value = (parseInt(cell.dataset.value) + 1) % 4;  // この行は不要になる
-        cell.innerHTML = '';
-        createCell(parseInt(cell.dataset.value), x, y).childNodes.forEach(node => cell.appendChild(node.cloneNode(true)));
-    };
 
     return cell;
 }
@@ -168,9 +160,9 @@ function createPalette() {
     createCell = (value, x, y) => {
         const cell = oldCreateCell(value, x, y);
         cell.onclick = () => {
-            cell.dataset.value = (parseInt(cell.dataset.value) + 1) % 4; // 3から0に戻るように修正
+            cell.dataset.value = selectedValue;  // パレットで選択された値を使用
             cell.innerHTML = '';
-            createCell(parseInt(cell.dataset.value), x, y).childNodes.forEach(node => cell.appendChild(node.cloneNode(true)));
+            oldCreateCell(selectedValue, x, y).childNodes.forEach(node => cell.appendChild(node.cloneNode(true)));
         };
         return cell;
     };
