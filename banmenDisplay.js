@@ -56,6 +56,12 @@ async function loadBanmenData() {
       rocketImg.style.width = '100%';
       rocketImg.style.position = 'absolute';
       cell.appendChild(rocketImg);
+    }else if (value === 3) {
+        const kutusitaImg = document.createElement('img');
+        kutusitaImg.src = 'kutusita3.png';
+        kutusitaImg.style.width = '100%';
+        kutusitaImg.style.position = 'absolute';
+        cell.appendChild(kutusitaImg);
     }
    
     cell.onclick = () => {
@@ -161,9 +167,9 @@ function createPalette() {
     createCell = (value, x, y) => {
         const cell = oldCreateCell(value, x, y);
         cell.onclick = () => {
-            cell.dataset.value = selectedValue;
+            cell.dataset.value = (parseInt(cell.dataset.value) + 1) % 4; // 3から0に戻るように修正
             cell.innerHTML = '';
-            oldCreateCell(selectedValue, x, y).childNodes.forEach(node => cell.appendChild(node.cloneNode(true)));
+            createCell(parseInt(cell.dataset.value), x, y).childNodes.forEach(node => cell.appendChild(node.cloneNode(true)));
         };
         return cell;
     };
