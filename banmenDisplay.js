@@ -31,6 +31,30 @@ function downloadLayout() {
     a.click();
 }
 
+function downloadLayout() {
+    const container = document.getElementById('container');
+    const layout = [];
+    let currentRow = [];
+
+    Array.from(container.children).forEach((cell, index) => {
+        currentRow.push(parseInt(cell.dataset.value));
+        if ((index + 1) % 9 === 0) {
+            layout.push([...currentRow]);
+            currentRow = [];
+        }
+    });
+
+    const content = layout.map(row => `[${row.join(',')}]`).join('\n');
+    const blob = new Blob([content], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'Banmen.txt';
+    a.click();
+}
+
+
+
 function createCell(value, x, y) {
     const cell = document.createElement('div');
     cell.style.width = '32px';
@@ -40,7 +64,6 @@ function createCell(value, x, y) {
     cell.dataset.y = y;
     cell.dataset.value = value;
     
-    // クリックイベントを追加
     cell.onclick = () => {
         cell.dataset.value = selectedValue;
         cell.innerHTML = '';
@@ -84,34 +107,22 @@ function createCell(value, x, y) {
         wantedImg.style.width = '100%';
         wantedImg.style.position = 'absolute';
         cell.appendChild(wantedImg);
+    } else if (value === 6) {
+        const keyImg = document.createElement('img');
+        keyImg.src = 'key3.png';
+        keyImg.style.width = '100%';
+        keyImg.style.position = 'absolute';
+        cell.appendChild(keyImg);
+    } else if (value === 7) {
+        const doorImg = document.createElement('img');
+        doorImg.src = 'santadoor1.png';
+        doorImg.style.width = '100%';
+        doorImg.style.position = 'absolute';
+        cell.appendChild(doorImg);
     }
 
     return cell;
 }
-
-function downloadLayout() {
-    const container = document.getElementById('container');
-    const layout = [];
-    let currentRow = [];
-
-    Array.from(container.children).forEach((cell, index) => {
-        currentRow.push(parseInt(cell.dataset.value));
-        if ((index + 1) % 9 === 0) {
-            layout.push([...currentRow]);
-            currentRow = [];
-        }
-    });
-
-    const content = layout.map(row => `[${row.join(',')}]`).join('\n');
-    const blob = new Blob([content], { type: 'text/plain' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'Banmen.txt';
-    a.click();
-}
-
-
 
 function createPalette() {
     const palette = document.createElement('div');
@@ -123,7 +134,9 @@ function createPalette() {
         { value: 2, img: 'rocket_tri.png', label: 'ロケット', description: '2番 ロケット' },
         { value: 3, img: 'kutusita3.png', label: '靴下', description: '3番 靴下' },
         { value: 4, img: 'bomb_1.png', label: 'ボム', description: '4番 爆弾' },
-        { value: 5, img: 'wanted.png', label: 'ワンテッド', description: '5番 ワンテッドポスター' }
+        { value: 5, img: 'wanted.png', label: 'ワンテッド', description: '5番 ワンテッドポスター' },
+        { value: 6, img: 'key3.png', label: 'キー', description: '6番 鍵' },
+        { value: 7, img: 'santadoor1.png', label: 'ドア', description: '7番 サンタのドア' }
     ];
 
     items.forEach(item => {
