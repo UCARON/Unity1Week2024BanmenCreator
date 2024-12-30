@@ -1,3 +1,6 @@
+// グローバルな選択値を保持
+let selectedValue = 0;
+
 // banmenDisplay.js
 async function loadBanmenData() {
     const banmenText = await fetch('Banmen.txt').then(r => r.text());
@@ -36,6 +39,14 @@ function createCell(value, x, y) {
     cell.dataset.x = x;
     cell.dataset.y = y;
     cell.dataset.value = value;
+    
+    // クリックイベントを追加
+    cell.onclick = () => {
+        cell.dataset.value = selectedValue;
+        cell.innerHTML = '';
+        const newCell = createCell(selectedValue, x, y);
+        Array.from(newCell.children).forEach(child => cell.appendChild(child.cloneNode(true)));
+    };
 
     const rengaImg = document.createElement('img');
     rengaImg.src = 'renga_s.png';
@@ -61,15 +72,15 @@ function createCell(value, x, y) {
         kutusitaImg.style.width = '100%';
         kutusitaImg.style.position = 'absolute';
         cell.appendChild(kutusitaImg);
-    }else if (value === 4) {
+    } else if (value === 4) {
         const bombImg = document.createElement('img');
         bombImg.src = 'bomb_1.png';
         bombImg.style.width = '100%';
         bombImg.style.position = 'absolute';
         cell.appendChild(bombImg);
-    }else if (value === 5) {
+    } else if (value === 5) {
         const wantedImg = document.createElement('img');
-        wantedImg.src = 'wanted.png'; // Add the wanted image
+        wantedImg.src = 'wanted.png';
         wantedImg.style.width = '100%';
         wantedImg.style.position = 'absolute';
         cell.appendChild(wantedImg);
@@ -100,6 +111,8 @@ function downloadLayout() {
     a.click();
 }
 
+
+
 function createPalette() {
     const palette = document.createElement('div');
     palette.className = 'palette';
@@ -112,8 +125,6 @@ function createPalette() {
         { value: 4, img: 'bomb_1.png', label: 'ボム', description: '4番 爆弾' },
         { value: 5, img: 'wanted.png', label: 'ワンテッド', description: '5番 ワンテッドポスター' }
     ];
-
-    let selectedValue = 0;
 
     items.forEach(item => {
         const itemContainer = document.createElement('div');
