@@ -100,20 +100,9 @@ function downloadLayout() {
     a.click();
 }
 
-// パレットとセレクターを追加
 function createPalette() {
     const palette = document.createElement('div');
-    palette.style.position = 'fixed';
-    palette.style.right = '20px';
-    palette.style.top = '20px';
-    palette.style.display = 'flex';
-    palette.style.flexDirection = 'column';
-    palette.style.gap = '10px';
-    palette.style.background = 'white';
-    palette.style.padding = '10px';
-    palette.style.border = '1px solid #ccc';
-    palette.style.borderRadius = '5px';
-    palette.style.boxShadow = '0 2px 4px rgba(0,0,0,0.1)';
+    palette.className = 'palette';
 
     const items = [
         { value: 0, img: null, label: '空', description: '0番 何も置かない' },
@@ -121,42 +110,33 @@ function createPalette() {
         { value: 2, img: 'rocket_tri.png', label: 'ロケット', description: '2番 ロケット' },
         { value: 3, img: 'kutusita3.png', label: '靴下', description: '3番 靴下' },
         { value: 4, img: 'bomb_1.png', label: 'ボム', description: '4番 爆弾' },
-        { value: 5, img: 'wanted.png', label: 'ワンテッド', description: '5番 ワンテッドポスター' } // Add new item
+        { value: 5, img: 'wanted.png', label: 'ワンテッド', description: '5番 ワンテッドポスター' }
     ];
 
     let selectedValue = 0;
 
     items.forEach(item => {
         const itemContainer = document.createElement('div');
-        itemContainer.style.textAlign = 'center';
+        itemContainer.className = 'item-container';
 
         const button = document.createElement('button');
-        button.style.width = '60px';
-        button.style.height = '60px';
-        button.style.position = 'relative';
-        button.style.border = '1px solid #ccc';
-        button.style.borderRadius = '5px';
-        button.style.background = 'white';
+        button.className = 'palette-button';
 
         if (item.img) {
             const img = document.createElement('img');
             img.src = item.img;
-            img.style.width = '100%';
-            img.style.height = '100%';
             button.appendChild(img);
         } else {
             button.textContent = item.label;
         }
 
         const label = document.createElement('div');
+        label.className = 'item-label';
         label.textContent = item.description;
-        label.style.fontSize = '12px';
-        label.style.marginTop = '5px';
-        label.style.color = '#666';
 
         button.onclick = () => {
             selectedValue = item.value;
-            palette.querySelectorAll('button').forEach(btn => {
+            palette.querySelectorAll('.palette-button').forEach(btn => {
                 btn.style.border = '1px solid #ccc';
                 btn.style.boxShadow = 'none';
             });
@@ -169,20 +149,9 @@ function createPalette() {
         palette.appendChild(itemContainer);
     });
 
-    // クリック時の動作を変更
-    const oldCreateCell = createCell;
-    createCell = (value, x, y) => {
-        const cell = oldCreateCell(value, x, y);
-        cell.onclick = () => {
-            cell.dataset.value = selectedValue;  // パレットで選択された値を使用
-            cell.innerHTML = '';
-            oldCreateCell(selectedValue, x, y).childNodes.forEach(node => cell.appendChild(node.cloneNode(true)));
-        };
-        return cell;
-    };
-
     return palette;
 }
+
 
 // init関数を修正
 async function init() {
