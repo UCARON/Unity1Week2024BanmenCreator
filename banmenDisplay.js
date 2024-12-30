@@ -67,6 +67,12 @@ function createCell(value, x, y) {
         bombImg.style.width = '100%';
         bombImg.style.position = 'absolute';
         cell.appendChild(bombImg);
+    }else if (value === 5) {
+        const wantedImg = document.createElement('img');
+        wantedImg.src = 'wanted.png'; // Add the wanted image
+        wantedImg.style.width = '100%';
+        wantedImg.style.position = 'absolute';
+        cell.appendChild(wantedImg);
     }
 
     return cell;
@@ -115,6 +121,7 @@ function createPalette() {
         { value: 2, img: 'rocket_tri.png', label: 'ロケット', description: '2番 ロケット' },
         { value: 3, img: 'kutusita3.png', label: '靴下', description: '3番 靴下' },
         { value: 4, img: 'bomb_1.png', label: 'ボム', description: '4番 爆弾' },
+        { value: 5, img: 'wanted.png', label: 'ワンテッド', description: '5番 ワンテッドポスター' } // Add new item
     ];
 
     let selectedValue = 0;
