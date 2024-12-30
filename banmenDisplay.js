@@ -61,6 +61,12 @@ function createCell(value, x, y) {
         kutusitaImg.style.width = '100%';
         kutusitaImg.style.position = 'absolute';
         cell.appendChild(kutusitaImg);
+    }else if (value === 4) {
+        const bombImg = document.createElement('img');
+        bombImg.src = 'bomb_1.png';
+        bombImg.style.width = '100%';
+        bombImg.style.position = 'absolute';
+        cell.appendChild(bombImg);
     }
 
     return cell;
@@ -108,6 +114,7 @@ function createPalette() {
         { value: 1, img: 'saku1.png', label: '柵', description: '1番 固定壁' },
         { value: 2, img: 'rocket_tri.png', label: 'ロケット', description: '2番 ロケット' },
         { value: 3, img: 'kutusita3.png', label: '靴下', description: '3番 靴下' },
+        { value: 4, img: 'bomb_1.png', label: 'ボム', description: '4番 爆弾' },
     ];
 
     let selectedValue = 0;
