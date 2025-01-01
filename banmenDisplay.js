@@ -178,7 +178,11 @@ function createPalette() {
 
 
 // init関数を修正
+// banmenDisplay.js
 async function init() {
+    // チュートリアルシステムを初期化
+    window.tutorialSystem.init();
+
     const palette = createPalette();
     document.body.appendChild(palette);
 
@@ -217,7 +221,6 @@ async function init() {
     };
     buttonContainer.appendChild(clearBtn);
 
-    // ファイル選択機能を追加
     const fileInput = document.createElement('input');
     fileInput.type = 'file';
     fileInput.accept = '.txt';
@@ -244,6 +247,9 @@ async function init() {
 
     buttonContainer.appendChild(openBtn);
     buttonContainer.appendChild(fileInput);
+
+    // ヘルプボタンを追加
+    window.tutorialSystem.addHelpButton(buttonContainer);
 
     document.body.appendChild(buttonContainer);
 }
