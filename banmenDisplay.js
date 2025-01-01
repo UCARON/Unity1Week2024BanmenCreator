@@ -132,11 +132,11 @@ function createPalette() {
         { value: 0, img: null, label: '空', description: '0番 何も置かない' },
         { value: 1, img: 'saku1.png', label: '柵', description: '1番 固定壁' },
         { value: 2, img: 'rocket_tri.png', label: 'ロケット', description: '2番 ロケット' },
-        { value: 3, img: 'kutusita3.png', label: '靴下', description: '3番 靴下' },
+        { value: 3, img: 'kutusita3.png', label: 'アイテム', description: '3番 アイテム' },
         { value: 4, img: 'bomb_1.png', label: 'ボム', description: '4番 爆弾' },
         { value: 5, img: 'wanted.png', label: 'ワンテッド', description: '5番 ワンテッドポスター' },
         { value: 6, img: 'key3.png', label: 'キー', description: '6番 鍵' },
-        { value: 7, img: 'santadoor1.png', label: 'ドア', description: '7番 サンタのドア' }
+        { value: 7, img: 'santadoor1.png', label: 'ドア', description: '7番 ゴールドア' }
     ];
 
     items.forEach(item => {
